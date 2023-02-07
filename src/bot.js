@@ -11,6 +11,7 @@ const client = new Client({
 client.commands = new Collection();
 client.aliases = new Collection();
 client.prefix = "e!";
+client.color = 0x333333;
 
 ["event", "command", "slash-command"].forEach(handler => {
   require(`./handlers/${handler}`)(client);
