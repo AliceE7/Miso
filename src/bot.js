@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
 const { token } = process.env;
 
 const client = new Client({
@@ -6,4 +6,10 @@ const client = new Client({
   partials: [Partials.Channel, Partials.Guild, Partials.Role]
 });
 
-client.login(token)
+client.commands = new Collection();
+
+["event", "command", "slash-command"].forEach(handler => {
+  require(`./handlers/${handler}`)(client);
+})
+
+client.login(token);
