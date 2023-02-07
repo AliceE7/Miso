@@ -4,6 +4,10 @@ module.exports = {
   once: true,
   run: async (client) => {
     // [@] (SET CLIENT STATUS)
-    client.users.setPrecence()
+    client.user.setPresence({
+      activities: [{ name: client.status.name, type: client.status.type }],
+      status: client.status.x,
+      clientStatus: client.device
+    });
   }
 }
