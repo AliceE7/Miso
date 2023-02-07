@@ -5,14 +5,12 @@ module.exports = async (client) => {
     for (const file of events) {
       const name = file.split(".")[0];
       const pull = require(`../../src/events/${dirs}/${file}`);
+      if (pull.disabled) {
+        console.log("disabled event")
+      }
       try {
-        if (pull.enabled) {
-          if (pull.once) {
-            client.once(pull.name, (...args) => pull.run(...args));
-          } else {
-            client.on(pull.name, (...args) => pull.run(...args));
-          }
-        } else { return; }
+        client.on(name, pull.bind(null, client))
+        delete require.cache[require.resolve("../events/" + dirs + "/" + file)];
       } catch (err) { console.log(err) }
     }
   })
