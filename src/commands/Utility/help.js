@@ -23,7 +23,7 @@ module.exports = {
         .setCustomId('help')
     )
 
-    const msg = message.channel.send({ embeds: [base], components: [actionrow] });
+    const msg = await message.channel.send({ embeds: [base], components: [actionrow] });
     const collector = message.channel.createMessageComponentCollector({
       time: 200000
     });
@@ -31,9 +31,11 @@ module.exports = {
     collector.on('collect', async (i) => {
      await i.deferUpdate();
       if (i.customId === "help") {
-        msg.edit({ content: "edited" })
+       await msg.edit({ content: "edited" })
       }
     });
+
+    collector.on('end', collected => { console.log("yes") })
 
     const cmd = args[1];
     if (cmd) {
