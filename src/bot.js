@@ -17,4 +17,6 @@ client.color = 0x333333;
   require(`./handlers/${handler}`)(client);
 });
 
+require('../dashboard/app.js')(client);
+
 client.login(token);
