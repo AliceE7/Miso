@@ -17,7 +17,6 @@ module.exports = (client) => {
         if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach((alias) => client.aliases.set(alias, pull.name));
       }
     });
-    logger.info(`${amount} Commands Loaded`)
   } catch (e) {
     logger.error(String(e.stack))
   }

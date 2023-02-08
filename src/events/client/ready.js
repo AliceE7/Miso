@@ -9,6 +9,5 @@ module.exports = async (client) => {
   client.user.setPresence({
     activities: [{ name: "Soon!", type: ActivityType.Playing }],
     status: "online",
-    clientStatus: "mobile"
   });
 }

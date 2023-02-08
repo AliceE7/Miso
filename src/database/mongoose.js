@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
-
+const chalk = require('chalk');
 module.exports = {
   async initializeMongoose() {
-    console.info(`Connecting to MongoDb...`);
+    console.log(
+      chalk.red("[ "), chalk.italic(chalk.green("MOMGO")), chalk.red(" ]"),
+      chalk.blue(`Connecting to MongoDb`)
+    )
 
     try {
       mongoose.set('strictQuery', true)
@@ -12,8 +15,12 @@ module.exports = {
         connectTimeoutMS: 90000,
         keepAlive: false,
       });
-      
-      console.info("Mongoose: Database connection established");
+
+      console.log(
+        chalk.red("[ "), chalk.italic(chalk.green("MONGO")), chalk.red(" ]"),
+        chalk.blue(`MongoDB Connected!`)
+      )
+
 
       return mongoose.connection;
     } catch (err) {
@@ -23,6 +30,5 @@ module.exports = {
   },
 
   schemas: {
-    prefix: require('./schemas/prefix.js'),
   },
 };
