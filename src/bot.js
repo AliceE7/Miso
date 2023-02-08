@@ -10,7 +10,7 @@ const client = new Client({
 
 client.commands = new Collection();
 client.aliases = new Collection();
-client.prefix = "e!";
+client.prefix = "*"
 client.color = 0x333333;
 
 ["event", "command", "slash-command"].forEach(handler => {
@@ -19,4 +19,4 @@ client.color = 0x333333;
 
 require('../dashboard/app.js')(client);
 
-client.login(token);
+client.login(token)

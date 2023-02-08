@@ -3,7 +3,7 @@ module.exports = {
   name: `help`,
   aliases: [],
   category: ``,
-  description: ``,
+  description: `Miso's Commands!`,
   usage: ``,
   examples: [``],
   perms: {
