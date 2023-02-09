@@ -10,6 +10,7 @@ const client = new Client({
 
 client.commands = new Collection();
 client.aliases = new Collection();
+client.usedcommands = "";
 client.prefix = "*"
 client.color = 0x333333;
 
@@ -18,5 +19,18 @@ client.color = 0x333333;
 });
 
 require('../dashboard/app.js')(client);
+
+process.on("rejectionHandled", (promise) => {
+  console.error('unhandledRejection:\n' + promise)
+});
+process.on("uncaughtException", (error, orgin) => {
+  console.error('unhandledRejection:\n' + "Orgin:\n" + orgin + "\n" + error)
+});
+process.on("uncaughtExceptionMonitor", (error, orgin) => {
+  console.error('unhandledRejection:\n' + "Orgin:\n" + orgin + "\n" + error)
+});
+process.on("unhandledRejection", (reason, promise) => {
+  console.error('unhandledRejection:\n' + "Reason:\n" + reason + "\n" + promise)
+});
 
 client.login(token)

@@ -58,18 +58,28 @@ module.exports = {
         })
       }
       if (i.customId === "list") {
-        commands.map((cmd) => `${cmd.name}`).join(", ");
+        const list = commands.map((cmd) => `${cmd.name}`).join(", ");
         const embed = new EmbedBuilder()
+          .setAuthor({ name: i.user.tag, iconURL: i.user.displayAvatarURL() })
           .setColor(client.color)
-          .setDescription(``)
+          .setDescription(`${list}`)
 
+        i.reply({
+          embeds: [embed],
+          ephemeral: true
+        }).catch(() => { })
+      }
+      if(i.customId === "info") {
+        const embed = new EmbedBuilder()
+        
+        .setDescription(`${info}`)
         i.reply({
           embeds: [embed],
           ephemeral: true
         })
       }
     });
-    
+
     collector.on('end', async () => {
       actionrow.components.forEach((button) => button.setDisabled(true))
       await msg.edit({ embeds: [base], components: [actionrow] })

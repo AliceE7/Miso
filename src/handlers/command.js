@@ -1,5 +1,4 @@
 const { readdirSync } = require("fs");
-logger = console;
 module.exports = (client) => {
   try {
     let amount = 0;
@@ -18,6 +17,6 @@ module.exports = (client) => {
       }
     });
   } catch (e) {
-    logger.error(String(e.stack))
+    console.log(e)
   }
 };

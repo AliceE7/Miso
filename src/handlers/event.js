@@ -6,7 +6,7 @@ module.exports = async (client) => {
       const name = file.split(".")[0];
       const pull = require(`../../src/events/${dirs}/${file}`);
       if (pull.disabled) {
-        console.log("disabled event")
+        return;
       }
       try {
         client.on(name, pull.bind(null, client))
