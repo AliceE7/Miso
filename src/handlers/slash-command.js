@@ -3,8 +3,6 @@ const chalk = require('chalk');
 const { PermissionsBitField } = require('discord.js');
 const { Routes } = require('discord-api-types/v9');
 const { REST } = require('@discordjs/rest')
-const AsciiTable = require('ascii-table');
-const table = new AsciiTable().setHeading('Slash Commands', 'Stats').setBorder('|', '=', "0", "0")
 
 const TOKEN = process.env.token;
 const CLIENT_ID = "1008300388715352085";
@@ -30,22 +28,20 @@ module.exports = (client) => {
 
       if (slashCommand.name) {
         client.slashCommands.set(slashCommand.name, slashCommand)
-        table.addRow(file.split('.js')[0], '✅')
       } else {
-        table.addRow(file.split('.js')[0], '⛔')
+        console.log('Error: Slash Command File Has no Name')
       }
     }
 
   });
-  console.log(chalk.red(table.toString()));
 
   (async () => {
     try {
       await rest.put(
+          Routes.applicationGuildCommands(CLIENT_ID, "1008095772484575283"),
           Routes.applicationCommands(CLIENT_ID),
         { body: slashCommands }
-      ).catch(() => { });
-      
+      );
       console.log(chalk.yellow('Slash Commands • Registered'))
     } catch (error) {
       console.log(error);
