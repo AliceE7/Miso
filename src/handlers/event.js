@@ -6,11 +6,11 @@ module.exports = async (client) => {
       const name = file.split(".")[0];
       const pull = require(`../../src/events/${dirs}/${file}`);
       if (pull.disabled) {
-        return;
+        console.log("e")
       }
       try {
         client.on(name, pull.bind(null, client))
-        delete require.cache[require.resolve("../events/" + dirs + "/" + file)];
+        delete require.cache[require.resolve("../../src/events/" + dirs + "/" + file)];
       } catch (err) { console.log(err) }
     }
   })

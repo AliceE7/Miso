@@ -1,4 +1,4 @@
-const { PermissionsBitField: { Flags }, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle: { Secondary, Primary, Danger }, ComponentType } = require('discord.js')
+const { PermissionsBitField: { Flags }, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle: { Secondary, Primary, Danger }, ComponentType, SlashCommandBuilder } = require('discord.js')
 module.exports = {
   name: `help`,
   aliases: [],

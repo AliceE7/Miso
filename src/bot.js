@@ -10,6 +10,7 @@ const client = new Client({
 
 client.commands = new Collection();
 client.aliases = new Collection();
+client.slashCommands = new Collection();
 client.usedcommands = "";
 client.prefix = "*"
 client.color = 0x333333;
@@ -34,3 +35,7 @@ process.on("unhandledRejection", (reason, promise) => {
 });
 
 client.login(token)
+
+module.exports = {
+  client
+}
