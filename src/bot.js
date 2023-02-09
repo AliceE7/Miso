@@ -22,16 +22,16 @@ client.color = 0x333333;
 require('../dashboard/app.js')(client);
 
 process.on("rejectionHandled", (promise) => {
-  console.error('unhandledRejection:\n' + promise)
+  console.error(promise)
 });
 process.on("uncaughtException", (error, orgin) => {
-  console.error('unhandledRejection:\n' + "Orgin:\n" + orgin + "\n" + error)
+  console.error(error, orgin)
 });
 process.on("uncaughtExceptionMonitor", (error, orgin) => {
-  console.error('unhandledRejection:\n' + "Orgin:\n" + orgin + "\n" + error)
+  console.error(error, orgin)
 });
-process.on("unhandledRejection", (reason, promise) => {
-  console.error('unhandledRejection:\n' + "Reason:\n" + reason + "\n" + promise)
+process.on("unhandledRejection", (promise, reason) => {
+  console.error(promise, reason)
 });
 
 client.login(token)

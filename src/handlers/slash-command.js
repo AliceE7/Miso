@@ -38,7 +38,6 @@ module.exports = (client) => {
   (async () => {
     try {
       await rest.put(
-          Routes.applicationGuildCommands(CLIENT_ID, "1008095772484575283"),
           Routes.applicationCommands(CLIENT_ID),
         { body: slashCommands }
       );
