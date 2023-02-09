@@ -25,7 +25,6 @@ module.exports = {
         { name: "ID:", value: `\`${member.id}\`` },
         { name: "Account Created:", value: `\`${dateformat(member.user.createdAt, "dddd, mmmm dS, yyyy, h:MM:ss TT")}\`` },
         { name: "Joined Server:", value: `\`${dateformat(member.joinedTimestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT")}\`` },
-        { name: "s", value: "s" }
       )
     
     if(!has) {
