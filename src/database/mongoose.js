@@ -1,34 +1,50 @@
-const mongoose = require("mongoose");
-const chalk = require('chalk');
-module.exports = {
-  async initializeMongoose() {
-    console.log(
-      chalk.red("[ "), chalk.italic(chalk.green("MOMGO")), chalk.red(" ]"),
-      chalk.blue(`Connecting to MongoDb`)
-    )
+const guildSchema = require("./schemas/guild.js")
 
-    try {
-      mongoose.set('strictQuery', true)
-      mongoose.connect(process.env.mongo, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-        connectTimeoutMS: 90000,
-        keepAlive: false,
-      });
+//Create/find users Database
+/*module.exports.fetchUser = async function(key){
 
-      console.log(
-        chalk.red("[ "), chalk.italic(chalk.green("MONGO")), chalk.red(" ]"),
-        chalk.blue(`MongoDB Connected!`)
-      )
-
-
-      return mongoose.connection;
-    } catch (err) {
-      console.error("Mongoose: Failed to connect to database", err);
-      process.exit(1);
+    let userDB = await userSchema.findOne({ id: key });
+    if(userDB){
+        return userDB;
+    }else{
+        userDB = new userSchema({
+            id: key,
+            registeredAt: Date.now()
+        })
+        await userDB.save().catch(err => console.log(err));
+        return userDB;
     }
-  },
+};*/
 
-  schemas: {
-  },
+//Create/find Guilds Database
+module.exports.fetchGuild = async function(key) {
+
+  let guildDB = await guildSchema.findOne({ id: key });
+
+  if (guildDB) {
+    return guildDB;
+  } else {
+    guildDB = new guildSchema({
+      id: key,
+    })
+    await guildDB.save().catch(err => console.log(err));
+    return guildDB;
+  }
 };
+
+//Create/find Members Database
+/*module.exports.fetchMember = async function(userID, guildID){
+
+    let memberDB = await memberSchema.findOne({ id: userID, guildID: guildID });
+    if(memberDB){
+        return memberDB;
+    }else{
+        memberDB = new memberSchema({
+            id: userID,
+            guildID: guildID,
+            registeredAt: Date.now()
+        })
+        await memberDB.save().catch(err => console.log(err));
+        return memberDB;
+    };
+};*/

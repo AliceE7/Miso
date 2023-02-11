@@ -1,15 +1,21 @@
 const cooldown = new Set(); //cooldown
 const ms = require('ms');
+const db = require('../../database/schemas/guild.js')
 const { EmbedBuilder, PermissionsBitField: { Flags }, ChannelType: { DM, GuildText } } = require('discord.js');
 
 module.exports = async (client, message) => {
-  const prefix = client.prefix;
   if (!message.guild?.available) return;
   if (message.author.bot) return;
   if (!message.member) {
     message.member = await message.guild.fetchMember(message);
   }
   if (!message.guild.members.me.permissions.has(Flags.SendMessages)) return;
+
+  const data = await db.findOne({
+    guild: message.guild.id
+  });
+
+  const prefix = data.prefix ? data.prefix : client.prefix;
 
   if (!message.content.toLowerCase().startsWith(prefix)) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/g);

@@ -18,7 +18,7 @@ module.exports = {
     const has = member.permissions.has(Flags.Administrator)
     
     const embed = new EmbedBuilder()
-      .setDescription(`<@${member.id}>`)
+      .setAuthor({ name: member.user.username, iconURL: member.user.displayAvatarURL() })
       .setColor(client.color)
       .addFields(
         { name: "Username:", value: `\`${member.user.username}\`` },

@@ -1,13 +1,19 @@
-const { ApplicationCommandType } = require('discord.js');
+const {
+  SlashCommandBuilder,
+  CommandInteraction,
+  PermissionFlagsBits,
+} = require("discord.js");
 
 module.exports = {
-	name: 'ping',
-	description: "miso's ping!",
-	type: ApplicationCommandType.ChatInput,
-	cooldown: 3000,
-	run: async (client, interaction) => {
-		interaction.reply({ 
-      content: `🏓 Pong! Latency: **${Math.round(client.ws.ping)} ms**`,
-    })
-	}
+  data: new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Pong")
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+  /**
+   *
+   * @param {CommandInteraction} interaction
+   */
+  run: async (interaction) => {
+    interaction.reply({content: "Pong", ephermal: true});
+  },
 };

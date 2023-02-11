@@ -70,8 +70,12 @@ module.exports = {
         }).catch(() => { })
       }
       if(i.customId === "info") {
+        const info = commands
+        .filter((cmd) => cmd.category === "Info")
+        .map((cmd) => cmd.name)
+        .join(', ')
+
         const embed = new EmbedBuilder()
-        
         .setDescription(`${info}`)
         i.reply({
           embeds: [embed],
