@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const config = require('./config.js')
 const { token } = process.env;
 const mongoose = require("mongoose");
 const chalk = require('chalk')
@@ -11,6 +12,7 @@ const client = new Client({
 client.commands = new Collection();
 client.aliases = new Collection();
 client.slash = new Collection();
+client.config = config;
 client.usedcommands = "";
 client.prefix = "*"
 client.color = "#7d76ff";
@@ -20,15 +22,12 @@ client.db = require('./database/mongoose.js');
   require(`./handlers/${handler}`)(client);
 });
 
-require('../dashboard/app.js')(client);
-
-
 mongoose.set('strictQuery', true)
 mongoose.connect(process.env.mongo, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   connectTimeoutMS: 90000,
-  keepAlive: false,
+  keepAlive: true,
 });
 
 console.log(

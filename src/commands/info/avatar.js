@@ -10,6 +10,7 @@ module.exports = {
     member: [],
     bot: []
   },
+  ownerOnly: false,
   run: async (client, message, args) => {
     const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
 

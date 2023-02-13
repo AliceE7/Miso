@@ -10,6 +10,7 @@ module.exports = {
     member: [],
     bot: []
   },
+  ownerOnly: false,
   run: async (client, message, args) => {
     const ping = Math.round(client.ws.ping);
     const round = Date.now() - message.createdTimestamp;

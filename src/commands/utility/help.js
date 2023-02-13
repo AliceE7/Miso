@@ -10,13 +10,14 @@ module.exports = {
     member: [],
     bot: []
   },
+  ownerOnly: false,
   run: async (client, message, args) => {
     const commands = client.commands
 
     const base = new EmbedBuilder()
       .setColor(client.color)
       .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
-      .setDescription('..')
+      .setDescription(`${client.usedcommands} .`)
 
     const actionrow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()

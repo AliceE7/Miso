@@ -1,5 +1,7 @@
 const { readdirSync } = require("fs");
+const { run } = require('../functions/handlers/handling-functions.js')
 module.exports = (client) => {
+  run(client)
   try {
     let amount = 0;
     readdirSync("./src/commands/").forEach((dir) => {
