@@ -1,48 +1,19 @@
 const express = require('express');
 const app = express();
-const passport = require("passport");
-const Strategy = require('passport-discord').Strategy;
+const { join } = require('path');
 
-module.exports = async (client) => {
-  //engine
-  app.set('view engine', "ejs");
-  app.set("views", __dirname + "views/");
+app.set('view engine', "ejs");
+app.set('views', join(__dirname, "views"));
+app.use(express.static(join(__dirname, 'public')));
 
-  passport.serializeUser((user, done) => done(null, user));
-  passport.deserializeUser((obj, done) => done(null, obj));
-  passport.use(new Strategy({
-    clientID: client.config.client.id,
-    clientSecret: process.env.secret,
-    callbackURL: client.config.dashboard.callback,
-    scope: ["identify", "guilds"],
-  },
-    function(accessToken, refreshToken, profile, done) {
-      process.nextTick(() => done(null, profile));
-    },
-  ));
+app.get('/', (req, res) => {
+  res.render('home/index.ejs')
+});
 
-  app.use(passport.initialize());
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+//admin
+app.get('/admin/developer', (req, res) => {
+  res.send(`X`)
+})
 
-  const checkAuth = (req, res, next) => {
-    if (req.isAuthenticated()) return next();
-    req.session.backURL = req.url;
-    res.redirect("/login");
-  };
-
-  app.get('/auth/login', passport.authenticate('discord'))
-
-  app.get('/auth/callback', passport.authenticate('discord', {
-    failureRedirect: "/"
-  }), function(req, res) {
-    res.redirect('/')
-  })
-
-  app.get("/", (req, res) => {
-    res.send("Website In Beta")
-  });
-
-  app.listen(3000, () => { });
-}
+app.listen(3001, () => { })

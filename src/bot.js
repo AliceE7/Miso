@@ -3,6 +3,7 @@ const config = require('./config.js')
 const { token } = process.env;
 const mongoose = require("mongoose");
 const chalk = require('chalk')
+const { run, logger } = require('./functions/handlers/handling-functions.js');
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
@@ -13,7 +14,7 @@ client.commands = new Collection();
 client.aliases = new Collection();
 client.slash = new Collection();
 client.config = config;
-client.usedcommands = "";
+client.log = logger;
 client.prefix = "*"
 client.color = "#7d76ff";
 client.db = require('./database/mongoose.js');
@@ -21,6 +22,8 @@ client.db = require('./database/mongoose.js');
 ["event", "command", "slash-command"].forEach(handler => {
   require(`./handlers/${handler}`)(client);
 });
+
+run(client)
 
 mongoose.set('strictQuery', true)
 mongoose.connect(process.env.mongo, {

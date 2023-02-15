@@ -14,12 +14,13 @@ module.exports = {
   },
   
   "emoji": {
-    "tick": "",
-    "mark": "",
+    "mark": "<:Y_:1049809842031841400>",
+    "xmark": "<:X_:1049809695042445373>",
     "error": ""
   },
 
   "dashboard": {
+    "enabled": true,
     "secret": process.env.secret,
     "callback": "https://cookiesz.tk/",  
   }

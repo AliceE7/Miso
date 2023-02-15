@@ -29,6 +29,7 @@
     "node-fetch": "^3.2.6",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
+    "path": "^0.12.7",
     "session": "^0.1.0"
   }
 }

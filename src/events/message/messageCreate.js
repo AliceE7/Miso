@@ -4,6 +4,7 @@ const db = require('../../database/schemas/guild.js');
 const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js');
 const { getCommandUsage } = require('../../functions/handlers/command.js')
 module.exports = async (client, message) => {
+  const config = client.config;
   if (!message.guild?.available) return;
   if (message.author.bot) return;
   if (!message.member) {
