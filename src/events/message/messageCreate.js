@@ -2,7 +2,8 @@ const cooldown = new Set(); //cooldown
 const ms = require('ms');
 const db = require('../../database/schemas/guild.js');
 const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js');
-const { getCommandUsage } = require('../../functions/handlers/command.js')
+const { getCommandUsage } = require('../../functions/handlers/command.js');
+const snekfetch = require('snekfetch');
 module.exports = async (client, message) => {
   const config = client.config;
   if (!message.guild?.available) return;
@@ -11,6 +12,10 @@ module.exports = async (client, message) => {
     message.member = await message.guild.fetchMember(message);
   }
 
+  /*if(message.channel.id === "1038853430069964991") {
+    const res = await snekfetch.get('https://some-random-api.ml/chatbot')
+  }*/
+  
   if (!message.guild.members.me.permissions.has(Flags.SendMessages)) return;
 
   const data = await db.findOne({ id: message.guild.id });
