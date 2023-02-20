@@ -7,7 +7,8 @@ const { run, logger } = require('./functions/handlers/handling-functions.js');
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
-  partials: [Partials.Channel, Partials.Guild, Partials.Role]
+  partials: [Partials.Channel, Partials.Guild, Partials.Role],
+  allowedMentions: []
 });
 
 client.commands = new Collection();

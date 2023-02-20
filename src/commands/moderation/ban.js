@@ -39,23 +39,28 @@ module.exports = {
 
     await member.send({ embeds: [dm] }).catch(() => { })
 
-    message.guild.bans.create(member.user?.id || member.id, { reason: reason, deleteMessageSeconds: 604800 })
-      .then((banned) => {
-        let embed = new EmbedBuilder()
-          .addFields({
-            name: "Banned:",
-            value: `${banned.user?.tag || banned?.tag} was banned`,
-          }, {
-            name: "Responsible Moderator:",
-            value: message.member.toString()
-          }, {
-            name: "Reason:",
-            value: reason
-          })
-          .setColor('Red')
-          .setAuthor({ name: banned.user?.tag || banned.tag, iconURL: banned.user.displayAvatarURL() })
-        message.channel.send({ embeds: [embed] })
-          .catch(() => { })
+    const banned = message.guild.bans.create(member.user?.id || member.id, { reason: reason, deleteMessageSeconds: 604800 })
+      .catch((e) => {
+        message.channel.send(` 
+            An Error!
+      1. **the mentioned user has a role above my role**
+      2. **miso does not have permissions to ban this user**
+**If 1 & 2 is not true you can report this error in support server using invite command**`)
       })
+    let embed = new EmbedBuilder()
+      .addFields({
+        name: "Banned:",
+        value: `${banned.user?.tag || banned?.tag} was banned`,
+      }, {
+        name: "Responsible Moderator:",
+        value: message.member.toString()
+      }, {
+        name: "Reason:",
+        value: reason
+      })
+      .setColor('Red')
+      .setAuthor({ name: banned.user?.tag || banned.tag, iconURL: message.author.displayAvatarURL() })
+    message.channel.send({ embeds: [embed] })
+      .catch(() => { })
   }
 }

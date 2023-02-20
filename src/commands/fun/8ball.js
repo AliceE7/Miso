@@ -6,18 +6,21 @@ module.exports = {
   category: `Fun`,
   description: ``,
   usage: `[Q]`,
-  examples: [``],
+  examples: [`8ball is miso a good bot`],
   perms: {
     member: [],
     bot: []
   },
   ownerOnly: false,
-  run: async (client, message, args) => {
+  run: async (client, message, args, getCommandUsage) => {
     const Q = args.join(" ");
     if (!Q) {
-      return message.channel.send('Q')
+      const usage = getCommandUsage(client, message, "8ball")
+      return message.channel.send(usage)
     }
-    if (Q < 1) return;
+    if (Q < 1) {
+      return;
+    }
 
     try {
       const res = await snekfetch.get(`https://eightballapi.com/api?question=${Q}&lucky=false`)

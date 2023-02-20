@@ -1,4 +1,4 @@
-const { PermissionsBitField: { Flags } } = require('discord.js');
+const { PermissionsBitField: { Flags }, EmbedBuilder } = require('discord.js');
 const snekfetch = require('snekfetch')
 module.exports = {
   name: `hug`,
