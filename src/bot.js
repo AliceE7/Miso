@@ -24,7 +24,7 @@ client.db = require('./database/mongoose.js');
   require(`./handlers/${handler}`)(client);
 });
 
-run(client);
+run(client)
 
 mongoose.set('strictQuery', true)
 mongoose.connect(process.env.mongo, {
