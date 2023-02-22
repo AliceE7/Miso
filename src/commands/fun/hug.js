@@ -4,7 +4,7 @@ module.exports = {
   name: `hug`,
   aliases: [],
   category: `Fun`,
-  description: `hugs!`,
+  description: `hug someone!`,
   usage: ``,
   examples: [``],
   perms: {
@@ -14,10 +14,31 @@ module.exports = {
   ownerOnly: false,
   run: async (client, message, args) => {
     try {
-      const res = await snekfetch.get('https://some-random-api.ml/animu/hug')
+      const member = message.mentions.users.first()
+
+      const res = await snekfetch.get('https://some-random-api.ml/animu/hug');
       const data = res.body.link;
-      message.channel.send(data)
-    } catch(e) {
+      if (member.id === message.author.id) {
+        const embed = new EmbedBuilder()
+          .setDescription(`${client.user.toString()} hugs ${message.member.toString()}`)
+          .setImage(data)
+          .setColor(client.color)
+        await message.channel.send({ embeds: [embed] })
+      }
+      if (member) {
+        const embed = new EmbedBuilder()
+          .setDescription(`${message.member.toString()} hugs <@${member.id}>`)
+          .setImage(data)
+          .setColor(client.color)
+        await message.channel.send({ embeds: [embed] })
+      } else {
+        const embed = new EmbedBuilder()
+          .setDescription(`${client.user.toString()} hugs ${message.member.toString()}`)
+          .setImage(data)
+          .setColor(client.color)
+        await message.channel.send({ embeds: [embed] })
+      }
+    } catch (e) {
       console.log(e)
     }
   }

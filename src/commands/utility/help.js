@@ -12,87 +12,119 @@ module.exports = {
   },
   ownerOnly: false,
   run: async (client, message, args) => {
-    const commands = client.commands
+    if (!args[0]) {
+      List(client, message)
+    }
+    else {
+      One(client, message, args)
+    }
+  }
+}
 
-    const base = new EmbedBuilder()
+
+
+
+async function List(client, message) {
+  const commands = client.commands;
+
+  const map = commands
+    .map((cmd) => cmd.name)
+    .join(', ')
+
+  const embed = new EmbedBuilder()
+    .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
+    .setDescription(map)
+    .setColor(client.color)
+
+  await message.channel.send({ embeds: [embed] })
+}
+
+async function One(client, message, args) {
+  const got = args[0].toLowerCase();
+  const commands = client.commands;
+  const embed = new EmbedBuilder()
+  const command = client.commands.get(got);
+
+  if (command) {
+
+    if (command.name) {
+      embed.addFields({
+        name: "Name:",
+        value: command.name
+      })
+    }
+
+    if (command.aliases) {
+      embed.addFields({
+        name: "Aliases:",
+        value: command.aliases.map((a) => a).join(", ") || "N/A"
+      })
+    }
+
+    if (command.category) {
+      embed.addFields({
+        name: "Category:",
+        value: command.category || "N/A"
+      })
+    }
+
+    if (command.description) {
+      embed.addFields({
+        name: "Description",
+        value: command.description || "N/A"
+      })
+    }
+
+    if (command.usage) {
+      embed.addFields({
+        name: "Usage:",
+        value: command.usage || "N/A"
+      })
+    }
+
+    if (command.examples) {
+      embed.addFields({
+        name: "Examples",
+        value: command.examples.map((e) => e).join(', ') || "N/A"
+      })
+    }
+
+    embed.setColor(client.color)
+    embed.setDescription(`<> **=** required, [] **=** optional`)
+    await message.channel.send({ embeds: [embed] })
+  }
+  else {
+    const none = new EmbedBuilder()
+      .setDescription('No Commands Found Matching ' + got)
       .setColor(client.color)
       .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
-      .setDescription(`${client.usedcommands} .`)
+    message.channel.send({ embeds: [none] })
+  }
 
-    const actionrow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setLabel('Help Me!')
-        .setStyle(Primary)
-        .setCustomId('help')
-    )
+  const one = args[0].toLowerCase()
+  const name = args[1]
+  const x = client.commands.get(name)
+  const em = new EmbedBuilder()
 
-    const catrow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setLabel(`List`)
-        .setStyle(Danger)
-        .setCustomId('list')
-    ).addComponents(
-      new ButtonBuilder()
-        .setLabel('Info')
-        .setStyle(Secondary)
-        .setCustomId("info")
-    )
-
-    const msg = await message.channel.send({ embeds: [base], components: [actionrow] });
-    const collector = message.channel.createMessageComponentCollector({
-      time: 200000
-    });
-
-    collector.on('collect', async (i) => {
-      if (i.customId === "help") {
-        const base_help = new EmbedBuilder()
-          .setColor(client.color)
-          .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
-          .addFields(
-            { name: "-------------------------", value: `C` }
-          )
-          .setTimestamp()
-        await i.reply({
-          embeds: [base_help],
-          components: [catrow],
-          ephemeral: true
+  if (x) {
+    if (one == "name") {
+      if (x.name) {
+        em.addFields({
+          name: "Name:",
+          value: x.name
         })
       }
-      if (i.customId === "list") {
-        const list = commands.map((cmd) => `${cmd.name}`).join(", ");
-        const embed = new EmbedBuilder()
-          .setAuthor({ name: i.user.tag, iconURL: i.user.displayAvatarURL() })
-          .setColor(client.color)
-          .setDescription(`${list}`)
-
-        i.reply({
-          embeds: [embed],
-          ephemeral: true
-        }).catch(() => { })
-      }
-      if(i.customId === "info") {
-        const info = commands
-        .filter((cmd) => cmd.category === "Info")
-        .map((cmd) => cmd.name)
-        .join(', ')
-
-        const embed = new EmbedBuilder()
-        .setDescription(`${info}`)
-        i.reply({
-          embeds: [embed],
-          ephemeral: true
-        })
-      }
-    });
-
-    collector.on('end', async () => {
-      actionrow.components.forEach((button) => button.setDisabled(true))
-      await msg.edit({ embeds: [base], components: [actionrow] })
-    })
-
-    const cmd = args[1];
-    if (cmd) {
-      console.log("e")
     }
+    if(one == "usage") {
+      if(x.usage) {
+        em.addFields({
+          name: "Usage:",
+          value: x.usage || "N/A"
+        })
+      }
+    }
+  } 
+  else {
+    return;
   }
 }

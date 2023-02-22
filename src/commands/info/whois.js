@@ -14,10 +14,12 @@ module.exports = {
   },
   ownerOnly: false,
   run: async (client, message, args) => {
-    const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
-    const member = message.guild.members.cache.get(user.id)
+    const user = message.mentions.users.first() || message.guild.members.cache.find(m => m.user.tag === args.slice(0).join(" ")) || message.guild.members.cache.find(m => m.user.username === args[0]) || message.guild.members.cache.get(args[0]) || message.author;
+
+    const member = message.guild.members.cache.get(user.id);
+
     const has = member.permissions.has(Flags.Administrator)
-    
+
     const embed = new EmbedBuilder()
       .setAuthor({ name: member.user.username, iconURL: member.user.displayAvatarURL() })
       .setColor(client.color)
@@ -27,11 +29,11 @@ module.exports = {
         { name: "Account Created:", value: `\`${dateformat(member.user.createdAt, "dddd, mmmm dS, yyyy, h:MM:ss TT")}\`` },
         { name: "Joined Server:", value: `\`${dateformat(member.joinedTimestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT")}\`` },
       )
-    
-    if(!has) {
+
+    if (!has) {
       embed.addFields({ name: "Permissions:", value: message.member.permissions.toArray().map(p => `\`${p}\``).join(", ") })
     } else {
-      embed.addFields({ name: "Permissions:", value: "`Administrator`"})
+      embed.addFields({ name: "Permissions:", value: "`Administrator`" })
     }
 
     message.channel.send({

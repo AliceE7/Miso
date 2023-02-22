@@ -34,6 +34,8 @@ module.exports = async (client, message) => {
       return;
   }
 
+  message.channel.sendTyping();
+
   if (client.config.modes.maintenance) {
     if (!client.config.developers.includes(message.author.id)) {
       let msg = message.channel.send("Looks Like The Bot Is In Maintenance Mode!\nwait till we fix the issues, you can join the support server for more info!\n> https://cookiesz.tk/support")

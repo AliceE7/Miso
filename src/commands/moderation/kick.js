@@ -19,13 +19,15 @@ module.exports = {
       return message.channel.send(res)
     }
 
+    const member = message.guild.members.cache.get(user.id);
+
     const reason = args.slice(1).join(" ") || "No Reason Provided"
 
     try {
-      message.guild.members.kick(user.id, { reason: reason }).then(async (member) => {
-        const msg = `**kicked** \`${member.tag}\` | ${reason} `;
+      const kicked = message.guild.members.kick(member.id, { reason: reason })
+      .catch(console.error)
+        const msg = `**kicked** \`${kicked.user.tag}\` | ${reason} `;
         await message.channel.send({ content: msg })
-      })
     } catch (e) {
       console.log(e)
     }
