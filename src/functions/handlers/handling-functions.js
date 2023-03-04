@@ -1,11 +1,4 @@
-async function run(client) {
-  setTimeout(() => {
-    if (client.config.dashboard.enabled) {
-      require('../../../dashboard/app.js')
-      logger("DASHBOARD", "Launching Dashboard.")
-    } else { return; }
-  }, 10000) // wait for client to be ready  (10s)
-}
+
 
 const chalk = require('chalk')
 async function logger(tag, content) {
@@ -27,6 +20,5 @@ async function logger(tag, content) {
 }
 
 module.exports = {
-  run,
   logger
 }

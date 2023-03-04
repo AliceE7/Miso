@@ -1,0 +1,17 @@
+{
+    "port": "80",
+    "oauth2": {
+        "redirect_uri": "https://cookiesz.tk/login/callback", 
+        "client_id": "1008300388715352085",
+        "secret": "XFvpfkBbvoWxbatNEp8Nmsuq2Y_Jq9uB",
+        "scopes": ["identify", "guilds"]
+    },
+    "session": {
+        "secret": "youshallnotpass",
+        "cookie": {
+            "maxAge": 86400000
+        },
+        "resave": true,
+        "saveUninitialized": false
+    }
+}

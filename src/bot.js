@@ -1,30 +1,40 @@
-const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection, AllowedMentionsTypes } = require('discord.js');
 const config = require('./config.js')
 const { token } = process.env;
 const mongoose = require("mongoose");
 const chalk = require('chalk')
-const { run, logger } = require('./functions/handlers/handling-functions.js');
+const { logger } = require('./functions/handlers/handling-functions.js');
+const path = require('path');
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+  intents: [GatewayIntentBits.Guilds,
+  GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.MessageContent,
+  GatewayIntentBits.GuildMembers
+  ],
   partials: [Partials.Channel, Partials.Guild, Partials.Role],
   allowedMentions: []
 });
 
 client.commands = new Collection();
+client.category = require("fs").readdirSync(path.join(__dirname, "commands"));
 client.aliases = new Collection();
 client.slash = new Collection();
 client.config = config;
 client.log = logger;
 client.prefix = "*"
-client.color = "#7d76ff";
+client.color = "#0e0606";
 client.db = require('./database/mongoose.js');
 
 ["event", "command", "slash-command"].forEach(handler => {
   require(`./handlers/${handler}`)(client);
 });
 
-run(client)
+if (client.isReady) {
+  setTimeout(() => {
+    require('../dashboard/app.js')(client);
+  }, 9000)
+}
 
 mongoose.set('strictQuery', true)
 mongoose.connect(process.env.mongo, {

@@ -4,7 +4,17 @@ const guildSchema = new mongo.Schema({
   id: String,
   name: String,
   prefix: { type: String, default: "*" },
-  message_logging: { type: String, default: null }
+  guild_messages_sent: { type: Number, default: "0" },
+
+  //welcome
+  welcome: {
+    channel: { type: String, default: null },
+    message: { type: String, default: null }
+  },
+  
+  //Logging
+  message_logging: { type: String, default: null },
+  server_logging: { type: String, default: "1038853430069964991" },
 })
 
 module.exports = new mongo.model('guild', guildSchema)
