@@ -20,6 +20,7 @@ module.exports = {
       const anime = res.body.anime;
       const embed = new EmbedBuilder()
       .setDescription(`${data}\n**Character:** ${character}\n**Anime:** ${anime}`)
+      .setFooter({ text: 'Powered By: https://some-random-api.ml' })
       .setColor(client.color)
       await message.channel.send({ embeds: [embed] })
     } catch(e) {

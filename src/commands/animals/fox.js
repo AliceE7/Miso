@@ -21,6 +21,7 @@ module.exports = {
       .setDescription("**Fact:** " + fact)
       .setImage(data)
       .setColor(client.color)
+      .setFooter({ text: 'Powered By: https://some-random-api.ml' })
       message.channel.send({ embeds: [embed] })
     } catch(e) {
       console.log(e)

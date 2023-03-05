@@ -1,5 +1,4 @@
 const { PermissionsBitField: { Flags }, EmbedBuilder } = require('discord.js');
-const moment = require('moment')
 module.exports = {
   name: `uptime`,
   aliases: [],

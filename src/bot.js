@@ -23,7 +23,7 @@ client.slash = new Collection();
 client.config = config;
 client.log = logger;
 client.prefix = "*"
-client.color = "#0e0606";
+client.color = "30b38a";
 client.db = require('./database/mongoose.js');
 
 ["event", "command", "slash-command"].forEach(handler => {
@@ -42,21 +42,13 @@ mongoose.connect(process.env.mongo, {
   useNewUrlParser: true,
   connectTimeoutMS: 90000,
   keepAlive: true,
-});
-
-console.log(
-  chalk.red("[ "), chalk.italic(chalk.green("MONGO")), chalk.red(" ]"),
-  chalk.blue(`MongoDB Connected!`)
-)
+}).then(() => { logger('MONGO', "MongoDB Connected!") })
 
 process.on("rejectionHandled", (promise) => {
-  console.error(promise)
+  logger('ERROR', promise)
 });
 process.on("uncaughtException", (error, orgin) => {
-  console.error(error, orgin)
-});
-process.on("uncaughtExceptionMonitor", (error, orgin) => {
-  console.error(error, orgin)
+  logger('ERROR', error + "\n" + orgin)
 });
 process.on("unhandledRejection", (promise, reason) => {
   console.error(promise, reason)

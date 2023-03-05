@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const settings = require('../../database/schemas/guild.js');
-const pretty = require('pretty-ms');
 module.exports = async (client, channel) => {
   if(!channel.guild) return;
 

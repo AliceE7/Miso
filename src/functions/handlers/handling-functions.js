@@ -1,22 +1,17 @@
+const chalk = require('chalk');
 
-
-const chalk = require('chalk')
+/** 
+* Log A Message To The Console
+* @param{String} tag
+* @param {String} content
+*/
 async function logger(tag, content) {
-  if (tag) {
     console.log(
-      chalk.red('[ '),
-      chalk.green(tag),
-      chalk.red(' ]'),
-      chalk.blue(content)
+      chalk.yellow('[ ')+
+      chalk.blue.underline(chalk.italic(tag))+
+      chalk.yellow(' ]'),
+      chalk.hex("#ff5ef6").bold(content)
     )
-  } else {
-    console.log(
-      chalk.red('[ '),
-      chalk.green('LOG'),
-      chalk.red(' ]'),
-      chalk.blue(content)
-    )
-  }
 }
 
 module.exports = {

@@ -5,10 +5,7 @@ const db = require('../../database/schemas/guild.js')
 * @params(discord.js).Client client
 */
 module.exports = async (client) => {
-  console.log(
-    chalk.red("[ "), chalk.italic(chalk.green("CLIENT")), chalk.red(" ]"),
-    chalk.blue(`Ready!`)
-  )
+  client.log('CLIENT', "Ready " + client.user.username)
   
   // [@] (SET CLIENT STATUS)
   client.user.setPresence({
