@@ -4,4 +4,4 @@
 
 <a href="https://top.gg/bot/1008300388715352085/vote">Vote: https://top.gg/bot/1008300388715352085/vote</a>
 
-[![Discord Bots](https://top.gg/api/widget/1008300388715352085.svg)(https://top.gg/bot/1008300388715352085)
+[![Discord Bots](https://top.gg/api/widget/1008300388715352085.svg)
