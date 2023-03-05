@@ -11,6 +11,7 @@ module.exports = {
     bot: []
   },
   ownerOnly: false,
+  cooldown: 0,
   run: async (client, message, args) => {
   }
 }

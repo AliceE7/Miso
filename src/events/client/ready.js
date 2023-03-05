@@ -12,8 +12,8 @@ module.exports = async (client) => {
   
   // [@] (SET CLIENT STATUS)
   client.user.setPresence({
-    activities: [{ name: "Soon!", type: ActivityType.Playing }],
-    status: "online",
+    activities: [{ name: "*help | Working On Dashboard!", type: ActivityType.Playing }],
+    status: "available",
   });
 
   client.guilds.cache.forEach(async(g) => {

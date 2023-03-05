@@ -1,6 +1,8 @@
 `COMMANDS & INFO`
 
-**last updated:** `21 Feb 2023`
+**version:** `1.0.0`
+
+**last updated:** `5 Mar 2023`
 
 **By:** `Ray <3#1821` *role:* `Owner`
 

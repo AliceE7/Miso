@@ -57,7 +57,7 @@ module.exports = (client) => {
   app.set('views', path.join(__dirname, "views"));
 
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extented: true }));
+  app.use(bodyParser.urlencoded({ extended: true }));
 
   /** 
   *LOAD THE ACS
@@ -135,5 +135,5 @@ module.exports = (client) => {
 
 
   const http = require('http').createServer(app)
-  http.listen(80, () => console.log("Loaded"))
+  http.listen(80, () => client.log('DASHBOARD', "Online"))
 }
