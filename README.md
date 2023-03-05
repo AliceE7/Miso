@@ -10,8 +10,7 @@
 1. **Add dashboard server settings page**
 2. **Add More Commands**
 
-
-
+# -------------
 
 
 [![Discord Bots](https://top.gg/api/widget/1008300388715352085.svg)
