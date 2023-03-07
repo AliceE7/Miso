@@ -7,10 +7,10 @@ const chalk = require('chalk');
 */
 async function logger(tag, content) {
     console.log(
-      chalk.yellow('[ ')+
-      chalk.blue.underline(chalk.italic(tag))+
-      chalk.yellow(' ]'),
-      chalk.hex("#ff5ef6").bold(content)
+      chalk.hex("#e4e41c").bold('[ ')+
+      chalk.hex("#f88949").underline(chalk.italic(tag))+
+      chalk.hex("#e4e41c").bold(' ]'),
+      chalk.hex("#f1483d").bold(content)
     )
 }
 

@@ -1,27 +1,30 @@
-const { PermissionsBitField: { Flags }, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle: { Secondary, Primary, Danger }, ComponentType, SlashCommandBuilder } = require('discord.js')
+const { PermissionsBitField: { Flags }, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle: { Secondary, Primary, Danger }, ComponentType, SlashCommandBuilder } = require('discord.js');
+
 module.exports = {
   name: `help`,
   aliases: [],
-  category: ``,
-  description: `Miso's Commands!`,
-  usage: ``,
-  examples: [``],
+  category: `Utility`,
+  description: `All My Commands!`,
+  usage: `help [cmdname/category]`,
+  examples: [`help ping`, "help Info"],
   perms: {
     member: [],
     bot: []
   },
   ownerOnly: false,
   run: async (client, message, args) => {
-    if (!args[0]) {
+  if (!args[0]) {
       List(client, message)
     }
-    else {
+    else if(args[0]) {
       One(client, message, args)
     }
   }
 }
 
-
+/** 
+* List all the commands
+*/
 
 
 async function List(client, message) {
@@ -38,6 +41,10 @@ async function List(client, message) {
 
   await message.channel.send({ embeds: [embed] })
 }
+
+/** 
+* get one command or a category
+*/
 
 async function One(client, message, args) {
   const got = args[0].toLowerCase();
@@ -85,12 +92,12 @@ async function One(client, message, args) {
     if (command.examples) {
       embed.addFields({
         name: "Examples",
-        value: command.examples.map((e) => e).join(', ') || "N/A"
+        value: command.examples.map((e) => e).join(' | ') || "N/A"
       })
     }
 
     embed.setColor(client.color)
-    embed.setDescription(`<> **=** required, [] **=** optional`)
+    embed.setDescription(`<> **=** required **|** [] **=** optional`)
     await message.channel.send({ embeds: [embed] })
   }
   else {
@@ -99,32 +106,5 @@ async function One(client, message, args) {
       .setColor(client.color)
       .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
     message.channel.send({ embeds: [none] })
-  }
-
-  const one = args[0].toLowerCase()
-  const name = args[1]
-  const x = client.commands.get(name)
-  const em = new EmbedBuilder()
-
-  if (x) {
-    if (one == "name") {
-      if (x.name) {
-        em.addFields({
-          name: "Name:",
-          value: x.name
-        })
-      }
-    }
-    if(one == "usage") {
-      if(x.usage) {
-        em.addFields({
-          name: "Usage:",
-          value: x.usage || "N/A"
-        })
-      }
-    }
-  } 
-  else {
-    return;
   }
 }

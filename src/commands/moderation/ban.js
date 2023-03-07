@@ -3,64 +3,46 @@ module.exports = {
   name: `ban`,
   aliases: [],
   category: `Moderation`,
-  description: `Ban a user`,
-  usage: `<user/ID> [reason]`,
-  examples: [``],
+  description: `ban a member`,
+  usage: `<user> [reason]`,
+  examples: [`ban 000000000000 spamming`],
   perms: {
-    member: [Flags.Administrator, Flags.BanMembers, Flags.ManageGuild],
+    member: [Flags.BanMembers],
     bot: [Flags.BanMembers]
   },
   ownerOnly: true,
+  cooldown: 1000,
   run: async (client, message, args, getCommandUsage) => {
-    const user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
-
-    if (!user) {
-      const res = getCommandUsage(client, message, "ban")
-      return message.channel.send(res)
-    }
-
-    const member = message.guild.members.cache.get(user.id);
+    const member = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(m => m.user.username === args[0]);
+    //if no user is provided
     if (!member) {
-      let embed = new EmbedBuilder()
-        .setColor("Red")
-        .setDescription(`Cannot find that user in the server.`)
+      const res = getCommandUsage(client, message, "ban");
+      message.channel.send(res)
     }
 
-    if (member.permissions.has(Flags.Administrator, Flags.ManageGuild, Flags.BanMembers)) {
-      return;
+    if (member.id === message.author.id) {
+      message.channel.send('Cant ban ur self')
     }
 
-    const reason = args.slice(1).join(" ") || "No Reason Provided"
+    if (!member.bannable) {
+      message.channel.send(`not banable`)
+    }
 
-    let dm = new EmbedBuilder()
-      .setDescription(`You were banned in **${message.guild.name}**`)
-      .setColor('Red')
-      .setAuthor({ name: client.user.tag, iconURL: client.user.displayAvatarURL() })
+    try {
+      const ban = await message.guild.bans.create(member.id, { reason: reason })
 
-    await member.send({ embeds: [dm] }).catch(() => { })
+      const memberAvatar = ban.user.avatarURL()
+      const memberUsername = ban.user.username
 
-    const banned = message.guild.bans.create(member.user?.id || member.id, { reason: reason, deleteMessageSeconds: 604800 })
-      .catch((e) => {
-        message.channel.send(` 
-            An Error!
-      1. **the mentioned user has a role above my role**
-      2. **miso does not have permissions to ban this user**
-**If 1 & 2 is not true you can report this error in support server using invite command**`)
-      })
-    let embed = new EmbedBuilder()
-      .addFields({
-        name: "Banned:",
-        value: `${banned.user?.tag || banned?.tag} was banned`,
-      }, {
-        name: "Responsible Moderator:",
-        value: message.member.toString()
-      }, {
-        name: "Reason:",
-        value: reason
-      })
-      .setColor('Red')
-      .setAuthor({ name: banned.user?.tag || banned.tag, iconURL: message.author.displayAvatarURL() })
-    message.channel.send({ embeds: [embed] })
-      .catch(() => { })
+      const embed = new EmbedBuilder()
+        .setAuthor({ name: memberUsername, iconURL: memberAvatar })
+        .setDescription(`${client.emoji.mark} | **banned ${memberUsername}** | ${reason}`)
+        .setColor('Green')
+
+      await message.channel.send({ embeds: [embed] })
+    } catch (e) {
+      message.channel.send('There was an error');
+      console.log(e)
+    }
   }
 }

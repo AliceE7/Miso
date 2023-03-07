@@ -19,8 +19,10 @@ const client = new Client({
 client.commands = new Collection();
 client.category = require("fs").readdirSync(path.join(__dirname, "commands"));
 client.aliases = new Collection();
-client.slash = new Collection();
+client.slash_commands = new Collection();
+client.commandArray = [];
 client.config = config;
+client.emoji = config.emoji;
 client.log = logger;
 client.prefix = "*"
 client.color = "30b38a";
@@ -53,6 +55,8 @@ process.on("uncaughtException", (error, orgin) => {
 process.on("unhandledRejection", (promise, reason) => {
   console.error(promise, reason)
 });
+
+client.handleCommands()
 
 client.login(token)
 

@@ -14,7 +14,7 @@ const guildSchema = new mongo.Schema({
   
   //Logging
   message_logging: { type: String, default: null },
-  server_logging: { type: String, default: "1038853430069964991" },
+  server_logging: { type: String, default: null },
 })
 
 module.exports = new mongo.model('guild', guildSchema)

@@ -1,32 +1,33 @@
-module.exports = async client => {
-  const fs = require("fs");
-  let commandsArray = [];
-  const { Routes } = require('discord-api-types/v9');
-  const { REST } = require('@discordjs/rest')
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v10");
+const fs = require("fs");
 
-  const TOKEN = process.env.token;
-  const CLIENT_ID = "1008300388715352085";
+module.exports = (client) => {
+  client.handleCommands = async () => {
+    const commandFolders = fs.readdirSync("./src/slash-commands");
+    for (const folder of commandFolders) {
+      const commandFiles = fs
+        .readdirSync(`./src/slash-commands/${folder}`)
+        .filter((file) => file.endsWith(".js"));
 
-  const rest = new REST({ version: '9' }).setToken(TOKEN);
-
-  const commandsFolder = fs.readdirSync("./src/slash-commands");
-  for (const folder of commandsFolder) {
-    const commandFiles = fs
-      .readdirSync(`./src/slash-commands/${folder}`)
-      .filter((file) => file.endsWith("js"));
-
-    for (const file of commandFiles) {
-      const commandFile = require(`../../src/slash-commands/${folder}/${file}`);
-
-      client.slash.set(commandFile.data.name, commandFile);
-
-      if (commandFile.developer) developerArray.push(commandFile.data.toJSON());
-      else commandsArray.push(commandFile.data.toJSON());
-      continue;
+      const { slash_commands, commandArray } = client;
+      for (const file of commandFiles) {
+        const command = require(`../../src/slash-commands/${folder}/${file}`);
+        slash_commands.set(command.data.name, command);
+        commandArray.push(command.data.toJSON());
+      }
     }
-  }
-  await rest.put(
-    Routes.applicationCommands(CLIENT_ID),
-    { body: commandsArray }
-  );
-}
+
+    const rest = new REST({ version: '10' }).setToken(process.env.token);
+    const clientId = "1008300388715352085";
+    const guildId = "1008095772484575283"
+    try {
+      await rest.put(Routes.applicationCommands(clientId), {
+        body: client.commandArray,
+      });
+      client.log("DISCORD", "Successfully reloaded application (/) commands.");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};

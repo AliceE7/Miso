@@ -13,9 +13,9 @@ module.exports = async (client) => {
     status: "available",
   });
 
-  client.guilds.cache.forEach(async(g) => {
+  /*client.guilds.cache.forEach(async(g) => {
     const data = await db.findOneAndUpdate({ id: g.id }, { name: g.name }, {
       upsert: true
     })
-  })
+  })*/
 }

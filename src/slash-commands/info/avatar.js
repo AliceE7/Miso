@@ -2,12 +2,34 @@ const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('disc
 
 module.exports = {
   data: new SlashCommandBuilder()
-  .setName('avatar')
-  .setDescription('get a users avatar!')
-  .setDefaultMemberPermissions(PermissionsBitField.Flags.UseApplicationCommands)
-  .addUserOption((option) => option.setName('user').setDescription('specific user').setRequired(false)),
+    .setName('info')
+    .setDescription('information commands')
+    .addSubcommand((sub) =>
+      sub
+        .setName('avatar')
+        .setDescription('returns users avatar!')
+        .addUserOption((op) =>
+          op.setName('user')
+            .setDescription('get a users avatar')
+            .setRequired(false)
+        )
+    ),
   run: async (client, interaction) => {
-    const user = interaction.options.get('user') || interaction.user;
-    interaction.reply({ content: user.id, ephemeral: true })
+    const user = interaction.options.get('user');
+    if (user) {
+      const member = interaction.guild.members.cache.get(user.value);
+      const embed = new EmbedBuilder()
+        .setAuthor({ name: member.user.username, iconURL: member.user.displayAvatarURL() })
+        .setImage(member.user.displayAvatarURL({ format: "png" , size: 4096 }))
+
+      return interaction.reply({ embeds: [embed] });
+    } else {
+      const member = interaction.guild.members.cache.get(interaction.user.id);
+      const embed = new EmbedBuilder()
+        .setAuthor({ name: member.user.username, iconURL: member.user.displayAvatarURL() })
+        .setImage(member.user.displayAvatarURL({ format: "png", size: 4096 }))
+
+      return interaction.reply({ embeds: [embed] });
+    }
   }
 }
