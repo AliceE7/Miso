@@ -1,7 +1,7 @@
 {
   "name": "nodejs",
   "version": "1.0.0",
-  "description": "",
+  "description": "Miso Is A Discord Bot Created By Alice Also Known As Ray (Ray<3#1821)",
   "main": "index.js",
   "scripts": {
     "start": "node ."
