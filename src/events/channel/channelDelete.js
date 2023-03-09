@@ -2,7 +2,8 @@ const { EmbedBuilder } = require('discord.js');
 const settings = require('../../database/schemas/guild.js');
 module.exports = async (client, channel) => {
   if(!channel.guild) return;
-
+  if(client.config.modes.maintenance) return;
+  
   const time = Date.now()
   const stamp = Math.floor(time / 1000)
   const date = `<t:${stamp}:R>`

@@ -3,7 +3,7 @@ const settings = require('../../database/schemas/guild.js');
 
 module.exports = async (client, channel) => {
   if(!channel.guild) return;
-
+  if(client.config.modes.maintenance) return;
   
   const time = channel.createdAt;
   const stamp = Math.floor(time / 1000)

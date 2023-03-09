@@ -3,6 +3,8 @@ const settings = require('../../database/schemas/guild.js');
 
 module.exports = async (client, oldChannel, newChannel) => {
   if (!oldChannel.guild) return;
+  if(client.config.modes.maintenance) return;
+  
   let embed = new EmbedBuilder(), updated = ""
   const old = oldChannel, newC = newChannel;
 

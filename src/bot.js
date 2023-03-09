@@ -32,6 +32,8 @@ client.db = require('./database/mongoose.js');
   require(`./handlers/${handler}`)(client);
 });
 
+require('./functions/client.js')(client);
+
 if (client.isReady) {
   setTimeout(() => {
     require('../dashboard/app.js')(client);
