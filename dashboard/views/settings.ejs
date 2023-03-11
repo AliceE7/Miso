@@ -31,8 +31,32 @@
                             <form method="POST">
                                 <h5 style="margin-bottom: 0.5rem; margin-top: 10px;color:#828cff">Prefix:</h5>
                                 <p style="font-style: italic;" class="disabled">The prefix that is added to discord messages in order to execute commands.</p>
-                                <input style="margin-top: -10px;" type="text" class="form-control" name="prefix" value="<%= guildData.prefix %>" placeholder="Your prefix.">
-                                
+                                <input style="margin-top: -10px;" type="text" class="form-control" name="prefix" value="<%= guildData.prefix %>" placeholder="<%= guildData.prefix %>">
+
+                              <br><br>
+                              <h5 style="margin-bottom: 0.5rem; margin-top: 10px;color:#828cff" id="message-logging">Message-logging</h5>
+                              <p style="font-style:italic;" class="disabled">Config The message-logging channel!</p>
+                              <select 
+                                class="form-control selectpicker"
+                                    multiple 
+                                    data-width="100%"
+                                    data-height="100%"
+                                    data-live-search="true" 
+                                    aria-label="Dj Roles"
+                                    name="msg_logging"
+                                >
+                                    <% guild.channels.cache
+                                        .filter(channel=> channel.isTextBased() && channel.permissionsFor(bot.user).has([Permissions.ViewChannel]))
+                                        .sort((a, b) => a.rawPosition - b.rawPosition)
+                                        .forEach((channel, i) => { %>
+                                      <option value="<%= channel.id%>" 
+                                            <%= guildData.message_logging ? "selected" : "" %>> #<%= channel.name%>
+                                        </option>
+                                    <% }) %>
+                                </select>
+
+
+                              <br><br>
                                 <button type="submit" class="btn btn-success text-white" style="font-size: 40px;">
                                     <i class="iconify" data-icon="cil:save"></i> Save Settings</button>
                             </form>

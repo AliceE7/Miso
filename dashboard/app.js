@@ -140,11 +140,14 @@ module.exports = (client) => {
       return res.redirect("/dashboard?error=" + encodeURIComponent("You are not allowed to do that!"));
     }
 
+    const settings = guildSettings.findOne({ id: guild.id })
+
     res.render("settings", {
       req: req,
       user: req.isAuthenticated() ? req.user : null,
       guild: client.guilds.cache.get(req.params.guildID),
       bot: client,
+      guildData: settings, 
       Permissions: PermissionsBitField,
       callback: "https://cookiez.ml/callback",
       categories: client.category,
@@ -174,6 +177,11 @@ module.exports = (client) => {
       const prefix = String(req.body.prefix).split(" ")[0];
       await guildSettings.findOneAndUpdate({ id: guild.id }, { prefix: prefix }, { upsert: true })
 
+    }
+
+    if (req.body.msg_logging) {
+      const msg_logging = req.body.msg_logging;
+      await guildSettings.findOneAndUpdate({ id: guild.id }, { message_logging: msg_logging }, { upsert: true })
     }
 
     res.render("settings", {
