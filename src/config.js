@@ -20,7 +20,7 @@ module.exports = {
   },
 
   "dashboard": {
-    "enabled": false,
+    "enabled": true,
     "secret": process.env.secret,
     "callback": "https://cookiesz.tk/",  
   }

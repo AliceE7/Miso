@@ -7,18 +7,17 @@ const ejs = require('ejs');
 const fs = require('fs')
 const passport = require('passport');
 const Strategy = require('passport-discord').Strategy;
-
+const { PermissionsBitField } = require('discord.js');
+const guildSettings = require('../src/database/schemas/guild.js')
 
 module.exports = (client) => {
   const app = express();
   const httpapp = express();
   const session = require('express-session');
   const MemoryStore = require('memorystore')(session);
-
   /** 
   *PASSPORT SETTINGS
   */
-
   passport.serializeUser((user, done) => done(null, user));
   passport.deserializeUser((obj, done) => done(null, obj));
   passport.use(new Strategy({
@@ -30,39 +29,30 @@ module.exports = (client) => {
     (accessToken, refreshToken, profile, done) => {
       process.nextTick(() => done(null, profile));
     }));
-
   /** 
   *ADD A SESSION
   */
-
   app.use(session({
     store: new MemoryStore({ checkPeriod: 86400000 }),
     secret: "verysecret",
     resave: false,
     saveUninitialized: false,
   }));
-
   /** 
   *INITILIZE PASSPORT
   */
-
   app.use(passport.initialize());
   app.use(passport.session());
-
   /** 
   *SET VIEWS
   */
-
   app.set('view engine', "ejs");
   app.set('views', path.join(__dirname, "views"));
-
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-
   /** 
   *LOAD THE ACS
   */
-
   app.use(express.static(path.join(__dirname, "/public")));
   app.use(express.static(path.join(__dirname, "/"), { dotfiles: "allow" }))
 
@@ -103,7 +93,6 @@ module.exports = (client) => {
   });
 
   app.get('/', (req, res) => {
-    const { PermissionsBitField } = require('discord.js')
     res.render("index.ejs", {
       req: req,
       bot: client,
@@ -121,7 +110,7 @@ module.exports = (client) => {
     if (!req.user.guilds) {
       return res.redirect("/?error=" + encodeURIComponent("Unable to get your Guilds!"));
     }
-    const { PermissionsBitField } = require('discord.js')
+
     res.render("dashboard", {
       req: req,
       user: req.isAuthenticated() ? req.user : null,
@@ -133,6 +122,73 @@ module.exports = (client) => {
     });
   });
 
+  // Settings endpoint.
+  app.get("/dashboard/:guildID", checkAuth, async (req, res) => {
+    // We validate the request, check if guild exists, member is in guild and if member has minimum permissions, if not, we redirect it back.
+    const guild = client.guilds.cache.get(req.params.guildID);
+    if (!guild) return res.redirect("/dashboard?error=" + encodeURIComponent("Can't get Guild Information Data"));
+    let member = guild.members.cache.get(req.user.id);
+    if (!member) {
+      try {
+        member = await guild.members.fetch(req.user.id);
+      } catch (err) {
+        console.error(`Couldn't fetch ${req.user.id} in ${guild.name}: ${err}`);
+      }
+    }
+    if (!member) return res.redirect("/dashboard?error=" + encodeURIComponent("Unable to fetch you, sorry!"));
+    if (!member.permissions.has(PermissionsBitField.ManageGuild)) {
+      return res.redirect("/dashboard?error=" + encodeURIComponent("You are not allowed to do that!"));
+    }
+
+    res.render("settings", {
+      req: req,
+      user: req.isAuthenticated() ? req.user : null,
+      guild: client.guilds.cache.get(req.params.guildID),
+      bot: client,
+      Permissions: PermissionsBitField,
+      callback: "https://cookiez.ml/callback",
+      categories: client.category,
+      commands: client.commands
+    }
+    );
+  });
+
+  app.post("/dashboard/:guildID", checkAuth, async (req, res) => {
+    // We validate the request, check if guild exists, member is in guild and if member has minimum permissions, if not, we redirect it back.
+    const guild = client.guilds.cache.get(req.params.guildID);
+    if (!guild) return res.redirect("/dashboard?error=" + encodeURIComponent("Can't get Guild Information Data!"));
+    let member = guild.members.cache.get(req.user.id);
+    if (!member) {
+      try {
+        member = await guild.members.fetch(req.user.id);
+      } catch (err) {
+        console.error(`Couldn't fetch ${req.user.id} in ${guild.name}: ${err}`);
+      }
+    }
+    if (!member) return res.redirect("/dashboard?error=" + encodeURIComponent("Can't Information Data about you!"));
+    if (!member.permissions.has(PermissionsBitField.ManageGuild)) {
+      return res.redirect("/dashboard?error=" + encodeURIComponent("You are not allowed to do that!"));
+    }
+
+    if (req.body.prefix) {
+      const prefix = String(req.body.prefix).split(" ")[0];
+      await guildSettings.findOneAndUpdate({ id: guild.id }, { prefix: prefix }, { upsert: true })
+
+    }
+
+    res.render("settings", {
+      req: req,
+      user: req.isAuthenticated() ? req.user : null,
+      guild: client.guilds.cache.get(req.params.guildID),
+      bot: client,
+      guildData: guildSettings,
+      Permissions: PermissionsBitField,
+      callback: "https://cookiez.ml/callback",
+      categories: client.category,
+      commands: client.commands
+    }
+    );
+  });
 
   const http = require('http').createServer(app)
   http.listen(80, () => client.log('DASHBOARD', "Online"))

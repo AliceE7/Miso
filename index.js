@@ -1,5 +1,5 @@
 const { version } = require('./package.json');
-const { logger } = require('./src/functions/handlers/handling-functions');
+const { logger } = require('./src/functions/functions.js');
 
 console.clear();
 logger('SYSTEM', `Version: ${version}`)

@@ -12,11 +12,11 @@ module.exports = {
   },
   ownerOnly: true,
   cooldown: 1000,
-  run: async (client, message, args, getCommandUsage) => {
+  run: async (client, message, args) => {
     const member = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(m => m.user.username === args[0]);
     //if no user is provided
     if (!member) {
-      const res = getCommandUsage(client, message, "ban");
+      const res = client.getCommandUsage(client, message, "ban");
       message.channel.send(res)
     }
 

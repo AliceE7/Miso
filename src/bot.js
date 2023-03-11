@@ -3,7 +3,7 @@ const config = require('./config.js')
 const { token } = process.env;
 const mongoose = require("mongoose");
 const chalk = require('chalk')
-const { logger } = require('./functions/handlers/handling-functions.js');
+const { logger } = require('./functions/functions.js');
 const path = require('path');
 
 const client = new Client({

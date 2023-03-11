@@ -11,10 +11,10 @@ module.exports = {
     bot: [Flags.BanMembers]
   },
   ownerOnly: false,
-  run: async (client, message, args, getCommandUsage) => {
+  run: async (client, message, args) => {
 
     if (!args[0]) {
-      let res = getCommandUsage(client, message, "unban")
+      let res = client.getCommandUsage(client, message, "unban")
       message.channel.send(res)
     }
 

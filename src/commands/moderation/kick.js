@@ -11,11 +11,11 @@ module.exports = {
     bot: []
   },
   ownerOnly: false,
-  run: async (client, message, args, getCommandUsage) => {
+  run: async (client, message, args) => {
     const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 
     if (!user) {
-      const res = getCommandUsage(client, message, "kick")
+      const res = client.getCommandUsage(client, message, "kick")
       return message.channel.send(res)
     }
 

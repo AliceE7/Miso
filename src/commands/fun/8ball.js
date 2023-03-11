@@ -12,10 +12,10 @@ module.exports = {
     bot: []
   },
   ownerOnly: false,
-  run: async (client, message, args, getCommandUsage) => {
+  run: async (client, message, args) => {
     const Q = args.join(" ");
     if (!Q) {
-      const usage = getCommandUsage(client, message, "8ball")
+      const usage = client.getCommandUsage(client, message, "8ball")
       return message.channel.send(usage)
     }
     if (Q < 1) {

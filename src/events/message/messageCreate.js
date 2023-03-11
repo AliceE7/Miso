@@ -2,7 +2,6 @@ const cooldown = new Set(); //cooldown
 const ms = require('ms');
 const db = require('../../database/schemas/guild.js');
 const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js');
-const { getCommandUsage } = require('../../functions/handlers/command.js');
 const snekfetch = require('snekfetch');
 module.exports = async (client, message) => {
   const config = client.config;
@@ -11,10 +10,6 @@ module.exports = async (client, message) => {
   if (!message.member) {
     message.member = await message.guild.fetchMember(message);
   }
-
-  /*if(message.channel.id === "1038853430069964991") {
-    const res = await snekfetch.get('https://some-random-api.ml/chatbot')
-  }*/
   
   if (!message.guild.members.me.permissions.has(Flags.SendMessages)) return;
 
@@ -34,11 +29,9 @@ module.exports = async (client, message) => {
       return;
   }
 
-  message.channel.sendTyping();
-
   if (client.config.modes.maintenance) {
     if (!client.config.developers.includes(message.author.id)) {
-      let msg = message.channel.send("Looks Like The Bot Is In Maintenance Mode!\nwait till we fix the issues, you can join the support server for more info!\n> https://cookiesz.tk/support")
+      let msg = message.channel.send("Looks Like The Bot Is In Maintenance Mode!\nwait till we fix the issues, you can join the support server for more info!\n> https://cookiez.ml/m/support")
       setTimeout(() => {
         msg.delete().catch(() => { })
       }, 10000)
@@ -70,7 +63,7 @@ module.exports = async (client, message) => {
     }
   }
 
-  command.run(client, message, args, getCommandUsage)
+  command.run(client, message, args)
   cooldown.add(`${message.author.id}${command.name}`);
   setTimeout(() => {
     cooldown.delete(`${message.author.id}${command.name}`);

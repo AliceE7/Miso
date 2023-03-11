@@ -18,18 +18,19 @@ module.exports = {
       id: message.guild.id
     });
 
-    if (!args[0]) return message.channel.send('You must provide a **new prefix**!');
-
-    if (args[0].length > 5) return message.channel.send('Your new prefix must be under \`5\` characters!')
+    if (!args[0]) {
+      let embed = new EmbedBuilder()
+      .setColor("Green")
+      .setDescription(`Current prefix for this server is ${data.prefix}`)
+      message.channel.send({ embeds: [embed] });
+    }
 
     if (data) {
-      message.channel.send(`The new prefix is now **\`${args[0]}\`**`);
-
-      let newData = await prefixModel.findOneAndUpdate({ id: message.guild.id }, { prefix: args[0] }, {
-        upsert: true
-      });
-    } else if (!data) {
-      message.channel.send(`**Uh Oh...**\nThis server's **database** is not setted up, this is a super rare error! Please wait a few minutes i will setup the database try this command in a few seconds!`)
+      const newData = prefixModel.findOneAndUpdate({ id: message.guild.id }, { prefix: args[0] }, { upsert: true });
+      let embed = new EmbedBuilder()
+      .setDescription(`Changed The Prefix To **${newData.prefix}**`)
+      .setColor(client.color)
+      await message.channel.send({ embeds: [embed] })
     }
   }
 }
